@@ -1,0 +1,145 @@
+<template name="report">
+  <div class="container">
+
+    <div class="ui active dimmer" id="loadingReport">
+      <div class="ui text loader">{{_ "loading"}}</div>
+    </div>
+
+    <div class="row boxReports">
+      <h3><i class="fa {{getIconClass}}"></i> {{getTitle}}</h3>
+      <div class="col-md-3">
+        
+        <p class="titulo">{{_ "filters"}}</p>
+        <hr class="lineRepor">
+        <form class="ui tiny form" id="filtro-reports">
+          <div class="two fields">
+            {{#if showComponent 'startDate'}}
+              <div class="field">
+                <span class="subtitleReport">{{_ "start"}}</span>
+                <div class="ui input">
+                  <input id="startTime" type="text" class="timepickers" readonly name="startDate">
+                </div>
+              </div>
+            {{/if}}
+
+            {{#if showComponent 'finishDate'}}
+              <div class="field">
+                <span class="subtitleReport">{{_ "end"}}</span>
+                <div class="ui input">
+                  <input id="endTime"  type="text" class="timepickers" readonly name="finishDate">
+                </div>
+              </div>
+            {{/if}}
+          </div>
+
+          {{#if showComponent 'categories'}}
+            <div class="field">
+              <div class="padd-2">
+                {{#if showCheck}}
+                  <input id="categories" class="checkReport" type="checkbox" name="categories">
+                {{/if}}
+                <span class="subtitleReport">{{_ "categories"}}</span>&nbsp;
+              </div>
+
+              <select class="ui dropdown" id="selectCategories">
+                <option value="all">{{_ "all"}}</option>
+                {{#each getCategories}}
+                  <option value="{{_id}}">{{name}}</option>
+                {{/each}}
+              </select>
+            </div>
+          {{/if}}
+
+          {{#if showComponent 'gembaWalks'}}
+            <div class="field">
+              <div class="padd-2">
+                {{#if showCheck}}
+                  <input id="gemba_walk" class="checkReport" type="checkbox">
+                {{/if}}
+                <span class="subtitleReport">{{_ "gemba_walks"}}</span>&nbsp;
+              </div>
+
+              <select class="ui dropdown" multiple="" id="selectGembas" name="gembaWalks">
+                <option value="all">{{_ "all"}}</option>
+                {{#each getGembaWalks}}
+                  <option value="{{_id}}">{{name}}</option>
+                {{/each}}
+              </select>
+            </div>
+          {{/if}}
+
+          {{#if showComponent 'status'}}
+            <div class="field">
+              <div class="padd-2">
+                {{#if showCheck}}
+                  <input id="status" class="checkReport" type="checkbox" name="status">
+                {{/if}}
+                <span class="subtitleReport">{{_ "status"}}</span>
+              </div>
+
+              <select  class="ui dropdown" id="selectStatus">
+                <option value="allstatus">{{_ "all"}}</option>
+                <option value="2">{{_ "on_time"}}</option>
+                <option value="1">{{_ "late"}}</option>
+                <option value="0">{{_ "not_done"}}</option>
+              </select>
+            </div>
+          {{/if}}
+
+          {{#if showComponent 'locations'}}
+            <div class="field">
+              <div class="padd-2">
+                {{#if showCheck}}
+                  <input id="locations" class="checkReport" type="checkbox">
+                {{/if}}
+                <span class="subtitleReport">{{_ "locations"}}</span>
+              </div>
+
+              <select  class="ui dropdown"  multiple="" id="selectLocations" name="locations">
+                <option value="all">{{_ "all_locations"}}</option>
+                {{#each getLocations}}
+                  <option value="{{_id}}">{{name}}</option>
+                {{/each}}
+              </select>
+            </div>
+          {{/if}}
+
+          <div class="field">
+            <button class="ui icon button teal medium"  id="btnGenerate">
+              <i class="bar chart icon"></i> {{_ "generate_report"}}
+            </button>
+
+            <div class="ui error message"></div>
+            {{#if showPDF}}
+              <button class="ui icon button buttonPdf" id="generatePDF">
+                <i class="file pdf outline icon"></i> {{_ "pdf"}}
+              </button>
+            {{/if}}
+          </div>
+        </form>
+      </div>
+
+      <div class="col-md-9 ">
+        <div style="width: 100%; height:auto; margin: 2% auto; text-align: center;">
+          {{#if showChartContainer}}
+            <div id="chartContainer" style="width: 100%; height:auto; margin: auto; border-radius: 8px;"></div>
+          {{else }}
+            {{#if showTextNoData}}
+              <div  class="sinGrafica text-center">
+                <img src="/img/reportsSinDatos.png" class="mrg-btn2 ">
+                <p>{{_ "Not_enough_data_to_generate_table"}}1</p>
+              </div>
+            {{else}}
+              <div class="sinGrafica text-center">
+                <img src="/img/reportsCheck.png" class="mrg-btn2 ">
+                <p>{{_ "select_filters"}}<br/>
+                {{_ "needed_to_generate_graphics"}}</p>
+              </div>
+            {{/if}}
+          {{/if}}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</template>
